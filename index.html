@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enquête relations entreprises partenaires</title>
+<style>
+  :root { font-family: 'Segoe UI', system-ui, sans-serif; color: #17313f; background: #eef5fa; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 0 0 60px; }
+  header.top { background: #0087CD; color: #fff; padding: 18px 22px 14px; position: sticky; top: 0; z-index: 20; box-shadow: 0 2px 8px rgba(0,0,0,.15); border-bottom: 3px solid #FF7A00; }
+  header.top h1 { margin: 0 0 4px; font-size: 20px; }
+  header.top .sub { font-size: 12.5px; opacity: .85; }
+  .tabs { display: flex; gap: 8px; margin-top: 12px; }
+  .tabbtn { border: 1px solid rgba(255,255,255,.4); background: transparent; color: #fff; padding: 7px 16px; border-radius: 18px; cursor: pointer; font-size: 14px; }
+  .tabbtn.active { background: #fff; color: #00639B; font-weight: 600; border-color: #fff; }
+  .tabnote { font-size: 11px; opacity: .78; align-self: center; }
+  header.top h1 .logo { vertical-align: -9px; margin-right: 6px; }
+  main { max-width: 980px; margin: 0 auto; padding: 22px 16px; }
+  .card { background: #fff; border: 1px solid #d5e5f0; border-radius: 10px; padding: 18px 20px; margin-bottom: 18px; box-shadow: 0 1px 4px rgba(15,60,95,.06); }
+  .card h2 { margin: 0 0 4px; font-size: 17px; color: #00639B; }
+  .card .hint { font-size: 13px; color: #5a6b76; margin: 0 0 12px; }
+  .small-hint { display: block; font-weight: 400; font-size: 11.5px; color: #5a6b76; margin-top: 2px; }
+  .card.intro { background: #e3f2fc; border-color: #b3dbf2; }
+  .card.intro h2 { margin-bottom: 8px; }
+  .card.intro p { margin: 4px 0; font-size: 13.5px; }
+  .note-box { background: #FFF3E5; border: 1px solid #F5B36B; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin: 0 0 14px; }
+  label.lbl { display: block; font-weight: 600; font-size: 14px; margin: 14px 0 6px; }
+  .inp, textarea.inp, select.inp { width: 100%; padding: 9px 11px; border: 1px solid #c2d3de; border-radius: 7px; font-size: 14px; font-family: inherit; background: #fff; }
+  textarea.inp { min-height: 84px; resize: vertical; }
+  .inp:focus { outline: 2px solid #8cc8ea; border-color: #00639B; }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px 14px; margin: 6px 0 2px; }
+  .opt { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; background: #f2f8fc; border: 1px solid #d3e4f0; padding: 6px 12px; border-radius: 18px; cursor: pointer; }
+  .opt input { margin: 0; accent-color: #00639B; }
+  .opt:has(input:checked) { background: #d8ecfa; border-color: #4aa9de; }
+  .dom-group { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .dom-group .inp { width: 170px; padding: 6px 9px; font-size: 12.5px; }
+  .hist-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .hist-head .briefck { margin: 0; }
+  .lrow { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; flex-wrap: wrap; }
+  .lrow .inp { flex: 1; min-width: 150px; }
+  .lrow .inp.s { flex: none; width: 190px; }
+  .mini { border: none; background: #f3e2d8; color: #7A2F0C; width: 30px; height: 30px; border-radius: 7px; cursor: pointer; font-size: 13px; flex: none; }
+  .mini:hover { background: #e9d0c0; }
+  .btn { border: none; border-radius: 8px; padding: 10px 18px; font-size: 14px; cursor: pointer; font-weight: 600; }
+  .btn.primary { background: #0087CD; color: #fff; }
+  .btn.primary:hover { background: #00639B; }
+  .btn.ghost { background: #ecf5fb; color: #00639B; border: 1px solid #b0d4ec; }
+  .btn.ghost:hover { background: #d9ecf9; }
+  .btn.warn { background: #f7eadf; color: #7A2F0C; border: 1px solid #e6c9b2; }
+  .btnrow { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; align-items: center; }
+  .pa-wrap { overflow-x: auto; border: 1px solid #d5e5f0; border-radius: 8px; }
+  table.pa-table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 13px; }
+  table.pa-table th { background: #0087CD; color: #fff; padding: 8px 6px; font-size: 12px; text-align: left; white-space: nowrap; }
+  table.pa-table td { border-bottom: 1px solid #e2edf5; padding: 3px 4px; }
+  td.pcell input { width: 100%; min-width: 100px; border: 1px solid transparent; background: transparent; padding: 7px 6px; font-size: 13px; font-family: inherit; border-radius: 6px; }
+  td.pcell input:focus { border-color: #00639B; background: #fff; outline: none; }
+  .pa-card { border: 1px solid #cbdcea; border-radius: 10px; margin-bottom: 16px; background: #fafdff; }
+  .pa-head { display: flex; justify-content: space-between; align-items: center; background: #e3f2fc; border-radius: 10px 10px 0 0; padding: 8px 14px; font-weight: 700; color: #00639B; font-size: 14px; }
+  .pa-body { padding: 12px 14px 14px; }
+  .del-pa { border: none; background: transparent; color: #7A2F0C; cursor: pointer; font-size: 15px; padding: 6px; }
+  .briefck { display: flex; align-items: flex-start; gap: 8px; background: #FFF3E5; border: 1px dashed #F5B36B; padding: 9px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; margin: 12px 0 0; }
+  .briefck input { accent-color: #FF7A00; margin: 2px 0 0; }
+  .pa-zone { margin-top: 10px; }
+  .dl-block { border: 1px solid #c9e2f2; border-radius: 9px; padding: 10px 14px; margin-bottom: 10px; background: #f4fafe; }
+  .dl-t { font-weight: 700; font-size: 13.5px; color: #00639B; margin-bottom: 8px; }
+  .champ-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 640px) { .champ-grid { grid-template-columns: 1fr; } }
+  table.view { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  table.view th { background: #e3f2fc; color: #00639B; padding: 7px 8px; text-align: left; border: 1px solid #c9e2f2; white-space: nowrap; }
+  table.view td { padding: 6px 8px; border: 1px solid #e2edf5; vertical-align: top; }
+  .stats { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .stat { background: #e3f2fc; border: 1px solid #b3dbf2; border-radius: 9px; padding: 10px 16px; min-width: 120px; }
+  .stat b { display: block; font-size: 22px; color: #00639B; }
+  .stat span { font-size: 12px; color: #4a5c68; }
+  .dup-box { background: #FFF3E5; border: 1px solid #F5B36B; border-radius: 9px; padding: 12px 16px; margin-bottom: 14px; font-size: 13.5px; }
+  .dup-box h3 { margin: 0 0 6px; font-size: 14px; color: #9C5A00; }
+  .dup-box ul { margin: 0; padding-left: 18px; }
+  .dup-box li { margin: 3px 0; }
+  .badge { display: inline-block; background: #FF7A00; color: #3D1F00; font-size: 11px; font-weight: 700; border-radius: 10px; padding: 1px 8px; margin-left: 6px; vertical-align: middle; }
+  .filts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+  .filts .inp { max-width: 260px; }
+  input#comp-motiv { accent-color: #FF7A00; }
+  .filts .opt:has(input:checked) { background: #FFF0DC; border-color: #F09A3E; }
+  details.seeblock { margin-top: 16px; }
+  details.seeblock summary { cursor: pointer; font-weight: 600; color: #00639B; }
+  .empty { color: #777; font-style: italic; font-size: 13px; padding: 10px; }
+  .modal { display: none; position: fixed; inset: 0; background: rgba(20,35,25,.45); z-index: 50; padding: 24px 12px; overflow-y: auto; }
+  .modal-card { background: #fff; border-radius: 12px; max-width: 860px; margin: 0 auto; padding: 20px 22px; }
+  .mhead { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #d5e5f0; padding-bottom: 10px; margin-bottom: 12px; }
+  .mhead h2 { margin: 0; font-size: 18px; color: #00639B; }
+  .fiche-sec { margin-bottom: 16px; }
+  .fiche-sec h3 { font-size: 14px; color: #00639B; margin: 12px 0 6px; border-bottom: 1px dashed #c9e2f2; padding-bottom: 3px; }
+  .fiche-sec ul { margin: 4px 0; padding-left: 18px; font-size: 13.5px; }
+  .fiche-sec li { margin: 3px 0; }
+  .fiche-pa { border: 1px solid #e2edf5; border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; font-size: 13.5px; }
+  .csvta { font-family: Consolas, monospace; font-size: 11.5px; min-height: 90px; background: #f6f8f6; }
+  .copymsg { font-size: 13px; color: #00639B; font-weight: 600; }
+  footer { text-align: center; font-size: 12px; color: #63727c; margin-top: 26px; }
+  @media print {
+    header.top, .btn, .btnrow, .mini, .del-pa, #view-compile, #view-form, .modal { display: none !important; }
+    header.top { position: static; box-shadow: none; }
+    body { background: #fff; }
+    .card { border: none; box-shadow: none; page-break-inside: avoid; }
+    .modal { display: block !important; position: static; background: none; padding: 0; }
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1><svg class="logo" width="34" height="34" viewBox="0 0 44 44" aria-hidden="true"><rect x="0.8" y="0.8" width="42.4" height="42.4" rx="9" fill="#0087CD" stroke="#fff" stroke-width="1.6"/><defs><g id="lpobird"><circle cx="0" cy="0" r="6.5" fill="#12303f"/><clipPath id="lpobcl"><circle cx="0" cy="0" r="6.5"/></clipPath><circle cx="0" cy="5" r="4.2" fill="#fff" clip-path="url(#lpobcl)"/><circle cx="-1.2" cy="-2.2" r="2.8" fill="#fff"/><circle cx="-1.6" cy="-2.6" r="0.75" fill="#12303f"/><path d="M3.5 -2.6 C6.5 -2.4 8.5 -1.6 9.6 -0.3 C8.4 0.9 6.3 1.5 3.5 1.2 C4.4 0.2 4.4 -1.7 3.5 -2.6 Z" fill="#FF7A00"/></g></defs><g transform="translate(12,13.5)"><use href="#lpobird"/></g><g transform="translate(32,13.5) scale(-1,1)"><use href="#lpobird"/></g><text x="22" y="37" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="10" font-weight="800" letter-spacing="2.5">LPO</text></svg> Enquête relations entreprises partenaires</h1>
+  <div class="sub">LPO Bourgogne-Franche-Comté — recensement des relations et coordonnées détenues par les équipes</div>
+  <div class="tabs">
+    <button class="tabbtn active" data-act="tab-form">✍️ Remplir le questionnaire</button>
+    <button class="tabbtn" data-act="tab-compile">📊 Compiler les réponses reçues</button>
+    <span class="tabnote">🔒 réservé à l&#39;organisateur — ne vous concerne pas</span>
+  </div>
+</header>
+<main>
+
+<!-- ══════════════ VUE FORMULAIRE ══════════════ -->
+<div id="view-form">
+
+  <div class="card intro" style="background:#FFF3E5;border-color:#F5B36B;">
+    <h2 style="color:#7A2F0C;">Mon rôle dans ce recensement</h2>
+    <p>Je ne viendrai jamais me substituer au travail que vous avez effectué avec une entreprise ou un contact en particulier. Au contraire, l&#39;idée est d&#39;avoir un point de vue global sur les différents avancements et, selon les cas, de connaître simplement l&#39;historique d&#39;une structure lorsque je l&#39;aborderai via un autre contact, de travailler ensemble lorsque c&#39;est nécessaire ou demandé de votre part, ou de me déléguer certaines parties qui m&#39;impliqueraient. En résumé, de renforcer la relation et le suivi de ces structures pour la LPO BFC.</p>
+  </div>
+
+  <div class="card intro">
+    <h2>Mode d&#39;emploi</h2>
+    <p>Ce questionnaire permet de <b>recenser les informations que vous détenez sur nos partenaires et prospects entreprises</b> : votre relation, vos contacts actuels et passés, et vos idées. Comptez <b>5 à 20 minutes</b> selon que vous ayez beaucoup d&#39;interactions avec des entreprises ou non.</p>
+    <p>Vos saisies sont <b>enregistrées automatiquement dans votre navigateur</b> — vous pouvez fermer la page et reprendre plus tard sur le même appareil. ⚠️ Attention toutefois : ne videz pas le cache ni les cookies de votre navigateur entre-temps, cela supprimerait les données que vous avez entrées.</p>
+    <p>💻 De préférence, remplissez ce questionnaire sur <b>ordinateur</b> — plus confortable que sur téléphone, surtout pour le tableau des partenaires.</p>
+    <p>À la fin, cliquez sur <b>« 📤 Récupérer mes exports à envoyer »</b> : téléchargez les <b>2 fichiers CSV</b> et <b>enregistrez la fiche en PDF</b>, puis renvoyez les <b>3 fichiers</b> comme indiqué dans le message qui vous a été adressé.</p>
+    <p style="color:#63727c;font-size:12.5px;">Les coordonnées transmises sont des contacts professionnels (B2B), utilisées uniquement dans le cadre du suivi des partenariats LPO.</p>
+  </div>
+
+  <div class="card">
+    <h2>1 · Qui êtes-vous ?</h2>
+    <p class="hint">Pour savoir qui contacter en cas de question et rattacher les informations transmises.</p>
+    <label class="lbl" for="q_nom">Prénom Nom</label>
+    <input class="inp" id="q_nom" data-k="ident.nom" type="text" placeholder="Ex. Marie Dupont">
+    <label class="lbl" for="q_lieu">Lieu LPO</label>
+    <input class="inp" id="q_lieu" data-k="ident.lieu" type="text" placeholder="Ex. Talant, Besançon…">
+    <span class="small-hint">Merci d&#39;entrer la commune en entier (ex. : pas Besac, mais Besançon).</span>
+    <label class="lbl" for="q_poste">Poste</label>
+    <input class="inp" id="q_poste" data-k="ident.poste" type="text" placeholder="Ex. Chargé de mission, animateur…">
+  </div>
+
+  <div class="card">
+    <h2>2 · Votre relation aux entreprises partenaires</h2>
+    <div class="note-box">ℹ️ <b>Précision :</b> par « entreprise », on entend toute entité — petite ou grand groupe — qui n&#39;est <b>ni une association, ni un partenaire institutionnel</b>. Les <b>fondations</b> et les <b>syndicats d&#39;entreprise</b> (général ou de filière) sont comptabilisés.</div>
+
+    <label class="lbl">À quelle fréquence êtes-vous en contact avec des entreprises partenaires ou prospects ?</label>
+    <div class="opts" id="freq-opts"></div>
+
+    <label class="lbl">Quels types de partenariat avez-vous connus ou identifiés ? <span style="font-weight:400;color:#5a6b76;">(plusieurs réponses possibles)</span></label>
+    <div class="opts" id="types-opts"></div>
+    <div id="q_type_autre_box" style="display:none; margin-top:8px;">
+      <label class="lbl" for="q_type_autre">Précisez « Autre »</label>
+      <input class="inp" id="q_type_autre" data-k="reponses.typeAutre" type="text" placeholder="Ex. prêt de salle, concours de photo…">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3 · Avez-vous des idées ou expériences à partager sur la relation Biodiv &amp; Entreprises ?</h2>
+    <p class="hint">Idée de partenariat, de projet, de mécénat, des choses que vous avez déjà vues ailleurs, des idées personnelles, des difficultés ou facilités déjà constatées… <b>Une idée ou expérience par ligne</b> pour faciliter l&#39;export.</p>
+    <div id="idees-rows"></div>
+    <button class="btn ghost" data-act="add-idee">＋ Ajouter une ligne</button>
+  </div>
+
+  <div class="card">
+    <h2>4 · À titre personnel, avez-vous des contacts (proches ou connaissances) en entreprise qui pourraient être des accès à des RDV entreprises ?</h2>
+    <p class="hint">Si c&#39;est le cas, indiquez pour chacun : le <b>nom de l&#39;entreprise</b>, son <b>activité</b>, sa <b>localisation</b> et la <b>nature de votre contact</b> (ex. « ma cousine est RH là-bas »). Il ne s&#39;agit pas de démarcher votre proche : simplement de savoir si cette personne pourrait nous faciliter un contact ou un rendez-vous. Nous rediscuterons bien entendu ensemble des possibilités envisagées.</p>
+    <div id="perso-rows"></div>
+    <button class="btn ghost" data-act="add-perso">＋ Ajouter une ligne</button>
+  </div>
+
+  <div class="card">
+    <h2>5 · Tableau de transmission par partenaire</h2>
+    <p class="hint">Indiquez ici vos <b>contacts actuels et passés</b> avec des entreprises, <b>même de quelques années en arrière</b>. Saisissez la première ligne (coordonnées) en ligne, puis détaillez l&#39;historique et la relation dans les champs dédiés.</p>
+    <div class="note-box">💬 <b>Si l&#39;historique ou la relation est trop long à résumer</b>, cochez la case « Trop d&#39;infos à préciser… » sous les coordonnées : les champs de détail se replient et <b>je vous recontacterai pour un rdv physique ou visio</b> pour se briefer.</div>
+    <div id="pa-cards"></div>
+    <button class="btn ghost" data-act="add-pa">＋ Ajouter un partenaire</button>
+  </div>
+
+  <div class="card">
+    <h2>6 · Une dernière remarque ou une question ?</h2>
+    <p class="hint">Un message à faire passer, une précision sur vos réponses, une question ? C&#39;est ici.</p>
+    <textarea class="inp" id="q_remarque" data-k="reponses.remarque" placeholder="Ex. je ne suis pas certain que ma liste soit complète, je peux la compléter par téléphone…"></textarea>
+  </div>
+
+  <div class="card">
+    <h2>7 · Vos exports à envoyer</h2>
+    <p class="hint">La fiche récapitule toutes vos réponses. Renvoyez ensuite les <b>3 fichiers</b> : les 2 CSV (tableur, ouverture directe Excel / LibreOffice) et votre fiche en PDF.</p>
+    <div class="btnrow">
+      <button class="btn primary" data-act="show-fiche">📤 Récupérer mes exports à envoyer</button>
+      <button class="btn warn" data-act="reset">Effacer mes réponses</button>
+    </div>
+  </div>
+
+  <div class="card" style="text-align:center;background:#FFF3E5;border-color:#F5B36B;">
+    <p style="margin:0;font-size:16px;font-weight:700;color:#7A2F0C;">Merci beaucoup ! 🦅</p>
+  </div>
+</div>
+
+<!-- ══════════════ VUE COMPILATION ══════════════ -->
+<div id="view-compile" style="display:none;">
+  <div class="card">
+    <h2>📊 Compiler les réponses reçues</h2>
+    <p class="hint">Réservé à l&#39;organisateur de l&#39;enquête — les collègues n&#39;utilisent jamais cet onglet. Sélectionnez tous les fichiers CSV reçus (réponses et/ou partenaires, mélangés possibles). La fusion est faite dans votre navigateur, rien n&#39;est envoyé en ligne.</p>
+    <input type="file" id="csv-files" multiple accept=".csv" style="display:none;">
+    <div class="btnrow">
+      <button class="btn primary" data-act="pick-csv">📁 Choisir les fichiers CSV…</button>
+      <button class="btn warn" data-act="clear-compile">Vider la compilation</button>
+    </div>
+  </div>
+  <div id="compile-out"></div>
+</div>
+
+<!-- ══════════════ MODAL FICHE ══════════════ -->
+<div id="modal-fiche" class="modal">
+  <div class="modal-card">
+    <div class="mhead">
+      <h2>📄 Ma fiche</h2>
+      <button class="mini" data-act="close-fiche" title="Fermer">✕</button>
+    </div>
+    <div id="fiche-body"></div>
+    <div class="csv-zone">
+      <h3 style="color:#00639B;font-size:15px;">📤 A télécharger pour envoyer — 3 fichiers</h3>
+      <p class="hint">Renvoyez ces 3 fichiers comme indiqué dans le message reçu.</p>
+      <div class="dl-block">
+        <div class="dl-t">A télécharger pour envoyer — 1️⃣ CSV réponses</div>
+        <div class="btnrow">
+          <button class="btn primary" data-act="exp-rep">⬇ Télécharger le CSV réponses</button>
+          <button class="btn ghost" data-act="copy-rep">📋 Copier</button>
+          <span class="small-hint" style="margin:0;">Secours si le téléchargement est bloqué : à coller dans un e-mail ou un fichier texte.</span>
+        </div>
+      </div>
+      <div class="dl-block">
+        <div class="dl-t">A télécharger pour envoyer — 2️⃣ CSV partenaires</div>
+        <div class="btnrow">
+          <button class="btn primary" data-act="exp-pa">⬇ Télécharger le CSV partenaires</button>
+          <button class="btn ghost" data-act="copy-pa">📋 Copier</button>
+          <span class="small-hint" style="margin:0;">Secours si le téléchargement est bloqué : à coller dans un e-mail ou un fichier texte.</span>
+        </div>
+      </div>
+      <div class="dl-block">
+        <div class="dl-t">A télécharger pour envoyer — 3️⃣ Fiche en PDF</div>
+        <div class="btnrow">
+          <button class="btn primary" data-act="print">🖨 Enregistrer ou imprimer au format PDF</button>
+          <span id="copy-msg" class="copymsg"></span>
+        </div>
+        <div class="small-hint">Dans la fenêtre d&#39;impression qui s&#39;ouvre, choisir l&#39;imprimante « Enregistrer au format PDF » (ou « Microsoft Print to PDF », ou « Enregistrer en PDF ») selon votre navigateur.</div>
+      </div>
+      <label class="lbl" for="fiche-csv-rep">Si le téléchargement est bloqué : contenu du CSV réponses (à copier-coller)</label>
+      <textarea class="inp csvta" id="fiche-csv-rep" readonly></textarea>
+      <label class="lbl" for="fiche-csv-pa">Si le téléchargement est bloqué : contenu du CSV partenaires (à copier-coller)</label>
+      <textarea class="inp csvta" id="fiche-csv-pa" readonly></textarea>
+    </div>
+  </div>
+</div>
+
+<footer>Enquête relations entreprises · LPO Bourgogne-Franche-Comté · fichier autonome, aucune donnée envoyée en ligne — sauvegarde locale automatique</footer>
+</main>
+
+<script>
+var KEY = 'form-partenaires-lpo-v2';
+var FREQS = ['Plusieurs dizaines de fois par an', 'Une ou deux fois par mois, parfois', 'Occasionnelle', 'Rarement (1 à 3 fois/an)', 'Jamais'];
+var TYPES_P = ['Commande fournisseur', 'Intervention / sensibilisation', 'Conseil dossier', 'Projet financé', '« Vente » de projet', 'Refuge LPO', 'Don / Mécénat', 'Événementiel commun (co-partenaire de projet, de réunion, d\'événement…)', 'Autre (à préciser)'];
+var RELATIONS = ['', 'Excellente', 'Cordiale - pro', 'Cordiale car nécessaire pour eux', 'Simple contact sans suite encore', 'Difficile'];
+var POTENTIELS = ['', 'Élevé', 'Moyen', 'Faible', 'À qualifier'];
+var PA_INLINE = [['structure','Structure'],['activite','Activité'],['departement','N° département'],['contact','Contact principal'],['email','E-mail'],['tel','Téléphone']];
+var PA_PH = { structure: 'Ex. Groupe Dupont', activite: 'Ex. BTP, assurance…', departement: 'Ex. 21, 25…', contact: 'Ex. Paul Martin', email: 'p.martin@exemple.fr', tel: '06 12 34 56 78' };
+var DOMAINS = ['Refuge LPO','Collectif CEDRE','Sensibilisation collaborateurs','Conseil','Projet','Accompagnement pour foncier et bâti','Mécénat-dons','Autre'];
+var PA_LABELS_FULL = ['Historique relation-projets déjà réalisés','Relation','Potentiel','Autres infos utiles','Rendez-vous oral souhaité'];
+var REP_LABELS = ['Prénom Nom','Lieu LPO','Poste','Fréquence de contact','Types de partenariat','Précision « Autre »','Idées / expériences Biodiv & Entreprises','Contacts personnels en entreprise','Dernière remarque / question','Nb partenaires transmis','Date d\'export'];
+var PA_HEADER = ['Collègue','Lieu LPO','Poste'].concat(PA_INLINE.map(function(c){ return c[1]; })).concat(['Domaines de relation']).concat(PA_LABELS_FULL);
+
+function defaultState() {
+  return { tab: 'form', ident: { nom:'', lieu:'', poste:'' },
+    reponses: { freq:'', types:[], typeAutre:'', remarque:'' },
+    listes: { idees: [{ desc:'' }], perso: [{ entreprise:'', activite:'', localisation:'', nature:'' }] },
+    partenaires: [newPa()],
+    compile: { nf: 0, rep: [], pa: [] } };
+}
+function newPa() { return { structure:'', activite:'', departement:'', contact:'', email:'', tel:'', domaines: [], conseil:'', projet:'', autre:'', historique:'', relation:'', potentiel:'', infos:'', brief: false }; }
+
+function load() {
+  try { var s = localStorage.getItem(KEY); if (s) { return JSON.parse(s); } } catch (e) {}
+  return defaultState();
+}
+var ST = load();
+function save() { try { localStorage.setItem(KEY, JSON.stringify(ST)); } catch (e) {} }
+
+/* ─── helpers ─── */
+function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function el(id) { return document.getElementById(id); }
+function csvEsc(s) { s = String(s == null ? '' : s); return /[;\r\n"]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s; }
+function toCSV(rows) { return '\ufeff' + rows.map(function(r) { return r.map(csvEsc).join(';'); }).join('\r\n'); }
+function downloadText(name, text) {
+  var b = new Blob([text], { type: 'text/csv;charset=utf-8' });
+  var u = URL.createObjectURL(b);
+  var a = document.createElement('a'); a.href = u; a.download = name;
+  document.body.appendChild(a); a.click();
+  setTimeout(function() { URL.revokeObjectURL(u); a.remove(); }, 200);
+}
+function slug(s) { return String(s || 'anonyme').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0, 40); }
+function normCie(s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,''); }
+function today() { var d = new Date(); return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2); }
+function paHasData(p) { var k; for (k in p) { if (p[k] && String(p[k]).trim()) { return true; } } return false; }
+function domLabel(p) {
+  var d = p.domaines || [];
+  return d.map(function(x) {
+    if (x === 'Conseil' && p.conseil) { return 'Conseil : ' + p.conseil; }
+    if (x === 'Projet' && p.projet) { return 'Projet : ' + p.projet; }
+    if (x === 'Autre' && p.autre) { return 'Autre : ' + p.autre; }
+    return x;
+  }).join(' + ');
+}
+function typesLabel() {
+  var t = ST.reponses.types.join(', ');
+  if (t && ST.reponses.typeAutre) { t += ' — Autre : ' + ST.reponses.typeAutre; }
+  else if (!t && ST.reponses.typeAutre) { t = 'Autre : ' + ST.reponses.typeAutre; }
+  return t;
+}
+
+/* ─── rendu initial des choix ─── */
+function optsHtml(kind, list, multi) {
+  return list.map(function(o) {
+    var nm = multi ? '' : ' name="q_freq"';
+    var at = multi ? ' data-ck="' + kind + '"' : '';
+    return '<label class="opt"><input type="' + (multi ? 'checkbox' : 'radio') + '"' + nm + at + ' value="' + esc(o) + '"> ' + esc(o) + '</label>';
+  }).join('');
+}
+function renderChoices() {
+  el('freq-opts').innerHTML = optsHtml('freq', FREQS, false);
+  el('types-opts').innerHTML = optsHtml('types', TYPES_P, true);
+}
+function fillForm() {
+  el('q_nom').value = ST.ident.nom; el('q_lieu').value = ST.ident.lieu; el('q_poste').value = ST.ident.poste;
+  el('q_type_autre').value = ST.reponses.typeAutre;
+  el('q_remarque').value = ST.reponses.remarque || '';
+  el('q_type_autre_box').style.display = ST.reponses.types.indexOf('Autre (à préciser)') > -1 ? '' : 'none';
+  var rs = document.querySelectorAll('input[name="q_freq"]');
+  for (var i = 0; i < rs.length; i++) { rs[i].checked = rs[i].value === ST.reponses.freq; }
+  var cks = document.querySelectorAll('input[data-ck]');
+  for (var j = 0; j < cks.length; j++) {
+    var arr = ST.reponses[cks[j].getAttribute('data-ck')];
+    cks[j].checked = arr && arr.indexOf(cks[j].value) > -1;
+  }
+}
+
+/* ─── listes dynamiques ─── */
+function renderIdees() {
+  el('idees-rows').innerHTML = ST.listes.idees.map(function(r, i) {
+    return '<div class="lrow"><input type="text" class="inp" data-l="idees" data-lc="desc" data-i="' + i + '" placeholder="Ex. partenariat « refuge » avec une entreprise locale, parrainage d\'espèces, mécénat de compétences…" value="' + esc(r.desc) + '">' +
+      '<button class="mini" data-act="del-idee" data-i="' + i + '" title="Supprimer la ligne">✕</button></div>';
+  }).join('') || '<div class="empty">Aucune ligne — cliquez sur ＋ pour en ajouter.</div>';
+}
+function renderPerso() {
+  el('perso-rows').innerHTML = ST.listes.perso.map(function(r, i) {
+    var f = function(k, ph, w) { return '<input type="text" class="inp' + (w ? ' s' : '') + '" data-l="perso" data-lc="' + k + '" data-i="' + i + '" placeholder="' + esc(ph) + '" value="' + esc(r[k]) + '">'; };
+    return '<div class="lrow">' + f('entreprise','Entreprise') + f('activite','Activité', true) + f('localisation','Localisation', true) + f('nature','Nature du contact (ex. : ma cousine est RH là-bas)') +
+      '<button class="mini" data-act="del-perso" data-i="' + i + '" title="Supprimer la ligne">✕</button></div>';
+  }).join('') || '<div class="empty">Aucune ligne — cliquez sur ＋ pour en ajouter.</div>';
+}
+function renderPa() {
+  el('pa-cards').innerHTML = ST.partenaires.map(function(p, i) {
+    var inline = PA_INLINE.map(function(c) {
+      return '<td class="pcell"><input type="text" data-r="' + i + '" data-c="' + c[0] + '" placeholder="' + esc(PA_PH[c[0]]) + '" value="' + esc(p[c[0]]) + '"></td>';
+    }).join('');
+    var relOpts = RELATIONS.map(function(o) { return '<option value="' + esc(o) + '"' + (p.relation === o ? ' selected' : '') + '>' + (o || '— Choisir —') + '</option>'; }).join('');
+    var potOpts = POTENTIELS.map(function(o) { return '<option value="' + esc(o) + '"' + (p.potentiel === o ? ' selected' : '') + '>' + (o || '— Choisir —') + '</option>'; }).join('');
+    var domHtml = '<label class="lbl">Domaines de relation avec cette entreprise <span style="font-weight:400;color:#5a6b76;">(plusieurs réponses possibles)</span></label><div class="opts">' +
+      DOMAINS.map(function(d) {
+        var ck = (p.domaines || []).indexOf(d) > -1 ? ' checked' : '';
+        var pill = '<label class="opt"><input type="checkbox" data-r="' + i + '" data-c="domaine" value="' + esc(d) + '"' + ck + '> ' + esc(d) + '</label>';
+        if (d === 'Conseil') { return '<span class="dom-group">' + pill + '<input type="text" class="inp" data-r="' + i + '" data-c="conseil" placeholder="Précisez le type" value="' + esc(p.conseil || '') + '"></span>'; }
+        if (d === 'Projet') { return '<span class="dom-group">' + pill + '<input type="text" class="inp" data-r="' + i + '" data-c="projet" placeholder="Précisez le type" value="' + esc(p.projet || '') + '"></span>'; }
+        if (d === 'Autre') { return '<span class="dom-group">' + pill + '<input type="text" class="inp" data-r="' + i + '" data-c="autre" placeholder="Précisez" value="' + esc(p.autre || '') + '"></span>'; }
+        return pill;
+      }).join('') + '</div>';
+    return '<div class="pa-card"><div class="pa-head"><span>🏢 Partenaire ' + (i + 1) + '</span>' +
+      '<button class="del-pa" data-act="del-pa" data-i="' + i + '" title="Supprimer ce partenaire">✕</button></div>' +
+      '<div class="pa-body">' +
+      '<div class="pa-wrap"><table class="pa-table"><thead><tr>' +
+      PA_INLINE.map(function(c) { return '<th>' + c[1] + '</th>'; }).join('') +
+      '</tr></thead><tbody><tr>' + inline + '</tr></tbody></table></div>' +
+      domHtml +
+      '<div class="hist-head"><label class="lbl">Historique relation-projets déjà réalisés</label>' +
+      '<label class="briefck"><input type="checkbox" data-r="' + i + '" data-c="brief"' + (p.brief ? ' checked' : '') + '> Trop d&#39;infos à préciser, je te détaillerai l&#39;historique et les projets lors d&#39;un rdv</label></div>' +
+      '<div class="pa-zone"' + (p.brief ? ' style="display:none"' : '') + '>' +
+      '<textarea class="inp" data-r="' + i + '" data-c="historique" placeholder="Projets, dons, conventions, événements, interventions déjà réalisés ensemble…">' + esc(p.historique) + '</textarea>' +
+      '<div class="champ-grid" style="margin-top:10px;">' +
+      '<div><label class="lbl">Relation</label><select class="inp" data-r="' + i + '" data-c="relation">' + relOpts + '</select></div>' +
+      '<div><label class="lbl">Potentiel <span class="small-hint">Intérêt du contact pour la Biodiv et des projets — le but est de classer les entreprises motivées à contacter très prochainement (détaillable en infos utiles)</span></label><select class="inp" data-r="' + i + '" data-c="potentiel">' + potOpts + '</select></div>' +
+      '</div>' +
+      '<label class="lbl">Autres infos utiles</label>' +
+      '<textarea class="inp" data-r="' + i + '" data-c="infos" placeholder="Sensibilités, conseils de contact, relances en cours, personnes à ne pas contacter directement…">' + esc(p.infos) + '</textarea>' +
+      '</div>' +
+      '</div></div>';
+  }).join('') || '<div class="empty">Aucun partenaire — cliquez sur ＋ Ajouter un partenaire.</div>';
+}
+
+/* ─── onglets ─── */
+function render() {
+  var f = ST.tab !== 'compile';
+  el('view-form').style.display = f ? '' : 'none';
+  el('view-compile').style.display = f ? 'none' : '';
+  var bs = document.querySelectorAll('.tabbtn');
+  bs[0].className = 'tabbtn' + (f ? ' active' : '');
+  bs[1].className = 'tabbtn' + (!f ? ' active' : '');
+  if (!f) { renderCompile(); }
+}
+
+/* ─── exports CSV individuels ─── */
+function repRow() {
+  var idees = ST.listes.idees.filter(function(r) { return r.desc; }).map(function(r) { return r.desc; }).join(' | ');
+  var perso = ST.listes.perso.filter(function(r) { return r.entreprise || r.activite || r.localisation || r.nature; })
+    .map(function(r) { return [r.entreprise, r.activite, r.localisation, r.nature].filter(function(x) { return x; }).join(' — '); }).join(' | ');
+  var nb = ST.partenaires.filter(paHasData).length;
+  return [ST.ident.nom, ST.ident.lieu, ST.ident.poste, ST.reponses.freq, ST.reponses.types.join(' + '), ST.reponses.typeAutre, idees, perso, ST.reponses.remarque || '', nb, today()];
+}
+function paRows() {
+  var rows = [];
+  ST.partenaires.forEach(function(p) {
+    if (paHasData(p)) {
+      rows.push([ST.ident.nom, ST.ident.lieu, ST.ident.poste]
+        .concat(PA_INLINE.map(function(c) { return p[c[0]]; }))
+        .concat([domLabel(p), p.historique, p.relation, p.potentiel, p.infos, p.brief ? 'Oui' : '']));
+    }
+  });
+  return rows;
+}
+function csvRepText() { return toCSV([REP_LABELS, repRow()]); }
+function csvPaText() { return toCSV([PA_HEADER].concat(paRows())); }
+function expRep() { downloadText('enquete-partenaires-' + slug(ST.ident.nom) + '-reponses.csv', csvRepText()); }
+function expPa() { downloadText('enquete-partenaires-' + slug(ST.ident.nom) + '-partenaires.csv', csvPaText()); }
+
+/* ─── fiche récapitulative ─── */
+function fLi(label, val) {
+  return '<li><b>' + esc(label) + ' :</b> ' + (val && String(val).trim() ? esc(val) : '<i>non renseigné</i>') + '</li>';
+}
+function fUl(items) {
+  var l = items.filter(function(x) { return x && String(x).trim(); });
+  if (!l.length) { return '<p class="empty">Aucune ligne renseignée.</p>'; }
+  return '<ul>' + l.map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+}
+function ficheHtml() {
+  var h = '';
+  h += '<div class="fiche-sec"><h3>👤 Qui êtes-vous ?</h3><ul>' +
+    fLi('Nom Prénom', ST.ident.nom) + fLi('Lieu LPO', ST.ident.lieu) + fLi('Poste', ST.ident.poste) + '</ul></div>';
+  h += '<div class="fiche-sec"><h3>🏢 Relation aux entreprises</h3><ul>' +
+    fLi('Fréquence de contact', ST.reponses.freq) + fLi('Types de partenariat', typesLabel()) + '</ul></div>';
+  h += '<div class="fiche-sec"><h3>💡 Idées / expériences Biodiv &amp; Entreprises</h3>' + fUl(ST.listes.idees.map(function(r) { return r.desc; })) + '</div>';
+  h += '<div class="fiche-sec"><h3>🤝 Contacts personnels en entreprise</h3>' +
+    fUl(ST.listes.perso.map(function(r) { return [r.entreprise, r.activite, r.localisation, r.nature].filter(function(x) { return x; }).join(' — '); })) + '</div>';
+  h += '<div class="fiche-sec"><h3>💬 Dernière remarque / question</h3>' +
+    (ST.reponses.remarque && String(ST.reponses.remarque).trim() ? '<p style="font-size:13.5px;">' + esc(ST.reponses.remarque).replace(/\n/g, '<br>') + '</p>' : '<p class="empty">Aucune remarque.</p>') + '</div>';
+  var pas = ST.partenaires.filter(paHasData);
+  h += '<div class="fiche-sec"><h3>📋 Partenaires transmis (' + pas.length + ')</h3>' +
+    (pas.length ? pas.map(function(p) {
+      return '<div class="fiche-pa"><b>🏢 ' + esc(p.structure || '(structure sans nom)') + '</b><ul>' +
+        fLi('Activité', p.activite) + fLi('N° département', p.departement) + fLi('Contact principal', p.contact) +
+        fLi('E-mail', p.email) + fLi('Téléphone', p.tel) + fLi('Domaines de relation', domLabel(p)) + fLi('Historique relation-projets déjà réalisés', p.historique) +
+        fLi('Relation', p.relation) + fLi('Potentiel', p.potentiel) + fLi('Autres infos utiles', p.infos) + fLi('Rendez-vous oral souhaité', p.brief ? 'Oui — à briefer lors d\'un rdv' : '') + '</ul></div>';
+    }).join('') : '<p class="empty">Aucun partenaire renseigné.</p>') + '</div>';
+  return h;
+}
+function showFiche() {
+  el('fiche-body').innerHTML = ficheHtml();
+  el('fiche-csv-rep').value = csvRepText();
+  el('fiche-csv-pa').value = csvPaText();
+  el('copy-msg').textContent = '';
+  el('modal-fiche').style.display = 'block';
+  el('modal-fiche').scrollTop = 0;
+}
+function copyText(txt, taId) {
+  var done = function() { el('copy-msg').textContent = '✅ Copié — collez-le dans un e-mail ou un fichier texte'; };
+  try {
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done, function() { fallbackCopy(taId, done); });
+      return;
+    }
+  } catch (e) {}
+  fallbackCopy(taId, done);
+}
+function fallbackCopy(taId, done) {
+  var ta = el(taId); ta.focus(); ta.select();
+  var ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  el('copy-msg').textContent = ok ? '✅ Copié — collez-le dans un e-mail ou un fichier texte' : '⚠ Copie impossible : sélectionnez le texte ci-dessous et copiez-le manuellement (Ctrl+C)';
+}
+
+/* ─── CSV parsing (compilation) ─── */
+function csvParse(text) {
+  text = String(text).replace(/^\ufeff/, '');
+  var rows = [], row = [], cur = '', q = false, i;
+  for (i = 0; i < text.length; i++) {
+    var ch = text[i];
+    if (q) {
+      if (ch === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else { q = false; } }
+      else { cur += ch; }
+    } else if (ch === '"') { q = true; }
+    else if (ch === ';') { row.push(cur); cur = ''; }
+    else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && text[i + 1] === '\n') { i++; }
+      row.push(cur); rows.push(row); row = []; cur = '';
+    } else { cur += ch; }
+  }
+  if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+  return rows.filter(function(r) { return r.join('').trim() !== ''; });
+}
+function importFiles(files) {
+  var n = 0;
+  function readOne() {
+    if (n >= files.length) { save(); renderCompile(); return; }
+    var f = files[n]; n++;
+    var fr = new FileReader();
+    fr.onload = function() {
+      try {
+        var rows = csvParse(fr.result);
+        if (rows.length > 1) {
+          var h = rows[0];
+          if (h.indexOf('Collègue') > -1 && h.indexOf('Structure') > -1) {
+            for (var r = 1; r < rows.length; r++) { if (rows[r].join('').trim()) { ST.compile.pa.push(rows[r]); } }
+          } else if (h.indexOf('Prénom Nom') > -1 && h.indexOf('Fréquence de contact') > -1) {
+            for (var r2 = 1; r2 < rows.length; r2++) { if (rows[r2].join('').trim()) { ST.compile.rep.push(rows[r2]); } }
+          } else { alert('Format non reconnu : ' + f.name); }
+        } else { alert('Fichier vide ou illisible : ' + f.name); }
+      } catch (e) { alert('Erreur de lecture : ' + f.name); }
+      readOne();
+    };
+    fr.readAsText(f, 'utf-8');
+  }
+  ST.compile.nf += files.length;
+  readOne();
+}
+
+/* ─── vue compilation ─── */
+function renderCompile() {
+  var out = el('compile-out');
+  var rep = ST.compile.rep, pa = ST.compile.pa;
+  if (!ST.compile.nf && !rep.length && !pa.length) {
+    out.innerHTML = '<div class="card"><div class="empty">Aucun fichier importé pour l&#39;instant. Choisissez les CSV reçus pour lancer la compilation.</div></div>';
+    return;
+  }
+  var ix = {};
+  PA_HEADER.forEach(function(h, i) { ix[h] = i; });
+  var iC = ix['Collègue'] != null ? ix['Collègue'] : 0;
+  var iS = ix['Structure'] != null ? ix['Structure'] : 3;
+
+  var seen = {}, norm;
+  pa.forEach(function(r) {
+    norm = normCie(r[iS]);
+    if (!norm) { return; }
+    if (!seen[norm]) { seen[norm] = { nom: r[iS], cols: {} }; }
+    seen[norm].cols[r[iC] || '(anonyme)'] = true;
+  });
+  var dups = [];
+  Object.keys(seen).forEach(function(k) {
+    var cols = Object.keys(seen[k].cols);
+    if (cols.length > 1) { dups.push({ nom: seen[k].nom, n: cols.length, cols: cols }); }
+  });
+  dups.sort(function(a, b) { return b.n - a.n; });
+
+  var iP = ix['Potentiel'] != null ? ix['Potentiel'] : 12;
+  var motivSet = {};
+  pa.forEach(function(r) {
+    if (String(r[iP] || '').trim() === 'Élevé') { var mk = normCie(r[iS]); if (mk) { motivSet[mk] = true; } }
+  });
+  var nMotiv = Object.keys(motivSet).length;
+
+  var stats = '<div class="stats">' +
+    '<div class="stat"><b>' + ST.compile.nf + '</b><span>fichiers importés</span></div>' +
+    '<div class="stat"><b>' + rep.length + '</b><span>fiches collègues</span></div>' +
+    '<div class="stat"><b>' + pa.length + '</b><span>lignes partenaires</span></div>' +
+    '<div class="stat"><b>' + Object.keys(seen).length + '</b><span>structures distinctes</span></div>' +
+    '<div class="stat"><b>' + dups.length + '</b><span>signalées par plusieurs collègues</span></div>' +
+    '<div class="stat" style="background:#FFF3E5;border-color:#F5B36B;"><b>' + nMotiv + '</b><span>entreprises motivées (potentiel élevé)</span></div></div>';
+
+  var dupHtml = dups.length ?
+    '<div class="dup-box"><h3>⚠ Structures citées par plusieurs collègues — à fusionner / vérifier</h3><ul>' +
+    dups.map(function(d) { return '<li><b>' + esc(d.nom) + '</b> — ' + d.n + ' collègues (' + esc(d.cols.join(', ')) + ')</li>'; }).join('') +
+    '</ul></div>' : '';
+
+  var filts = '<div class="filts"><input class="inp" id="comp-search" type="search" placeholder="🔍 Rechercher une structure, un contact…">' +
+    '<select class="inp" id="comp-col"></select>' +
+    '<label class="opt"><input type="checkbox" id="comp-motiv"> ⚡ Entreprises motivées uniquement (potentiel élevé)</label></div>';
+  var cols = [];
+  Object.keys(seen).forEach(function(k) {
+    Object.keys(seen[k].cols).forEach(function(c) { if (cols.indexOf(c) < 0) { cols.push(c); } });
+  });
+  cols.sort();
+
+  var paTable = '<div class="pa-wrap"><table class="view"><thead><tr>' +
+    PA_HEADER.map(function(h) { return '<th>' + esc(h) + '</th>'; }).join('') + '</tr></thead><tbody id="comp-pa-body"></tbody></table></div>';
+  var repTable = '<details class="seeblock card"><summary>Fiches réponses des collègues (' + rep.length + ')</summary><div class="pa-wrap" style="margin-top:10px;">' +
+    '<table class="view"><thead><tr>' + REP_LABELS.map(function(h) { return '<th>' + esc(h) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+    rep.map(function(r) { return '<tr>' + r.map(function(c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') +
+    '</tbody></table></div></details>';
+
+  out.innerHTML = '<div class="card">' + stats + dupHtml +
+    '<div class="btnrow" style="margin-bottom:14px;"><button class="btn primary" data-act="exp-comp-pa">⬇ Fusion partenaires (CSV)</button>' +
+    '<button class="btn primary" data-act="exp-comp-rep">⬇ Fusion fiches (CSV)</button></div>' +
+    filts + paTable + '</div>' + repTable;
+
+  var selC = el('comp-col');
+  var o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'Tous les collègues'; selC.appendChild(o0);
+  cols.forEach(function(c) { var o = document.createElement('option'); o.value = c; o.textContent = c; selC.appendChild(o); });
+
+  renderCompPa('', '', false);
+
+  el('comp-search').addEventListener('input', function() { renderCompPa(this.value, el('comp-col').value, el('comp-motiv').checked); });
+  selC.addEventListener('change', function() { renderCompPa(el('comp-search').value, this.value, el('comp-motiv').checked); });
+  el('comp-motiv').addEventListener('change', function() { renderCompPa(el('comp-search').value, el('comp-col').value, this.checked); });
+}
+function renderCompPa(q, col, motiv) {
+  var qn = String(q || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  var ix = {}; PA_HEADER.forEach(function(h, i) { ix[h] = i; });
+  var iS = ix['Structure'];
+  var iP = ix['Potentiel'] != null ? ix['Potentiel'] : 12;
+  var counts = {};
+  ST.compile.pa.forEach(function(r) { var k = normCie(r[iS]); if (k) { counts[k] = (counts[k] || 0) + 1; } });
+  var rows = ST.compile.pa.filter(function(r) {
+    if (col && r[0] !== col) { return false; }
+    if (motiv && String(r[iP] || '').trim() !== 'Élevé') { return false; }
+    if (qn) {
+      var flat = r.join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      if (flat.indexOf(qn) < 0) { return false; }
+    }
+    return true;
+  });
+  el('comp-pa-body').innerHTML = rows.map(function(r) {
+    var k = normCie(r[iS]);
+    var badge = counts[k] > 1 ? '<span class="badge">×' + counts[k] + '</span>' : '';
+    return '<tr>' + r.map(function(c, i) {
+      return '<td>' + esc(c) + (i === iS ? badge : '') + '</td>';
+    }).join('') + '</tr>';
+  }).join('') || '<tr><td colspan="' + PA_HEADER.length + '" class="empty">Aucun résultat.</td></tr>';
+}
+function expCompPa() {
+  var rows = [PA_HEADER].concat(ST.compile.pa);
+  downloadText('enquete-partenaires-FUSION-partenaires.csv', toCSV(rows));
+}
+function expCompRep() {
+  var rows = [REP_LABELS].concat(ST.compile.rep);
+  downloadText('enquete-partenaires-FUSION-fiches.csv', toCSV(rows));
+}
+
+/* ─── dispatcher ─── */
+document.addEventListener('click', function(e) {
+  var t = e.target;
+  while (t && t !== document && !(t.getAttribute && t.getAttribute('data-act'))) { t = t.parentNode; }
+  if (!t || !t.getAttribute || !t.getAttribute('data-act')) { return; }
+  var act = t.getAttribute('data-act');
+  var i = parseInt(t.getAttribute('data-i'), 10);
+  if (act === 'tab-form') { ST.tab = 'form'; save(); render(); }
+  else if (act === 'tab-compile') { ST.tab = 'compile'; save(); render(); }
+  else if (act === 'add-idee') { ST.listes.idees.push({ desc: '' }); save(); renderIdees(); }
+  else if (act === 'del-idee') { ST.listes.idees.splice(i, 1); save(); renderIdees(); }
+  else if (act === 'add-perso') { ST.listes.perso.push({ entreprise:'', activite:'', localisation:'', nature:'' }); save(); renderPerso(); }
+  else if (act === 'del-perso') { ST.listes.perso.splice(i, 1); save(); renderPerso(); }
+  else if (act === 'add-pa') { ST.partenaires.push(newPa()); save(); renderPa(); focusPa(ST.partenaires.length - 1); }
+  else if (act === 'del-pa') {
+    if (paHasData(ST.partenaires[i]) && !confirm('Supprimer la fiche de « ' + (ST.partenaires[i].structure || 'partenaire sans nom') + ' » ?')) { return; }
+    ST.partenaires.splice(i, 1); save(); renderPa();
+  }
+  else if (act === 'show-fiche') { showFiche(); }
+  else if (act === 'close-fiche') { el('modal-fiche').style.display = 'none'; }
+  else if (act === 'exp-rep') { expRep(); }
+  else if (act === 'exp-pa') { expPa(); }
+  else if (act === 'copy-rep') { copyText(csvRepText(), 'fiche-csv-rep'); }
+  else if (act === 'copy-pa') { copyText(csvPaText(), 'fiche-csv-pa'); }
+  else if (act === 'print') { showFiche(); window.print(); }
+  else if (act === 'reset') {
+    if (confirm('Effacer toutes vos réponses dans ce navigateur ? Cette action est définitive.')) {
+      var tab = ST.tab; ST = defaultState(); ST.tab = tab; save(); fillForm(); renderIdees(); renderPerso(); renderPa();
+      el('modal-fiche').style.display = 'none';
+    }
+  }
+  else if (act === 'pick-csv') { el('csv-files').click(); }
+  else if (act === 'clear-compile') {
+    if (confirm('Vider la compilation (les fichiers déjà importés seront retirés) ?')) { ST.compile = { nf: 0, rep: [], pa: [] }; save(); renderCompile(); }
+  }
+  else if (act === 'exp-comp-pa') { expCompPa(); }
+  else if (act === 'exp-comp-rep') { expCompRep(); }
+});
+function focusPa(i) {
+  var cards = document.querySelectorAll('.pa-card');
+  var c = cards[i];
+  if (c) { var f = c.querySelector('input'); if (f) { f.focus(); } }
+}
+
+/* ─── saisie : maj état + autosave ─── */
+function onEdit(t) {
+  if (t.getAttribute('data-k')) {
+    var p = t.getAttribute('data-k').split('.');
+    var o = ST; for (var i = 0; i < p.length - 1; i++) { o = o[p[i]]; }
+    o[p[p.length - 1]] = t.value;
+  } else if (t.getAttribute('data-l')) {
+    ST.listes[t.getAttribute('data-l')][parseInt(t.getAttribute('data-i'), 10)][t.getAttribute('data-lc')] = t.value;
+  } else if (t.getAttribute('data-r')) {
+    var pr = ST.partenaires[parseInt(t.getAttribute('data-r'), 10)];
+    var pc = t.getAttribute('data-c');
+    if (pc === 'domaine') {
+      var darr = pr.domaines || (pr.domaines = []);
+      var dpos = darr.indexOf(t.value);
+      if (t.checked && dpos < 0) { darr.push(t.value); }
+      if (!t.checked && dpos > -1) { darr.splice(dpos, 1); }
+    } else {
+      pr[pc] = pc === 'brief' ? t.checked : t.value;
+      if (pc === 'brief') { renderPa(); }
+    }
+  } else if (t.getAttribute('data-ck')) {
+    var k2 = t.getAttribute('data-ck'), arr = ST.reponses[k2];
+    var pos = arr.indexOf(t.value);
+    if (t.checked && pos < 0) { arr.push(t.value); }
+    if (!t.checked && pos > -1) { arr.splice(pos, 1); }
+    if (k2 === 'types') { el('q_type_autre_box').style.display = arr.indexOf('Autre (à préciser)') > -1 ? '' : 'none'; }
+  } else if (t.name === 'q_freq') { ST.reponses.freq = t.value; }
+  save();
+}
+document.addEventListener('input', function(e) { if (e.target.matches && e.target.matches('input, select, textarea')) { onEdit(e.target); } });
+document.addEventListener('change', function(e) {
+  if (e.target.id === 'csv-files' && e.target.files && e.target.files.length) { var fs = e.target.files; e.target.value = ''; importFiles(fs); return; }
+  if (e.target.matches && e.target.matches('input[type="radio"], input[type="checkbox"], select')) { onEdit(e.target); }
+});
+
+/* ─── boot ─── */
+renderChoices();
+fillForm();
+renderIdees();
+renderPerso();
+renderPa();
+render();
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" nonce="xahq+PAEoehQDfFkCEfWSQ==" data-cf-beacon='{"version":"2024.11.0","token":"36b4216ae2dc4d5488c249161e71fe1e","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
